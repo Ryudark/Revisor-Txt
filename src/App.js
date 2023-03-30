@@ -1,6 +1,6 @@
 import './App.css';
 import { useState } from 'react';
-import swal from 'sweetalert';
+import swal from 'sweetalert'; //libreria de alerta
 
 function App() {
 
@@ -10,8 +10,7 @@ function App() {
   let line2 = []
   let line3 = []
   
-  let chargeAnna = 0
-  
+  //Estados para el div final
   const [charge, setcharge] = useState(0)
   const [bonAppetit, setBonAppetit] = useState(false)
   const [totalCost, setTotalCost] = useState(0)
@@ -40,8 +39,11 @@ function App() {
         }
         constant++
       }
+
+      //se guarda en una variable el total de la factura sin tener en cuenta nada mas
       let totalCost = line2.reduce((anterior, actual)=>Number(anterior)+Number(actual))
 
+      //Costo de la factura sin el articulo que Anna no comio, Cuando se quiere evaluar un articulo de mas en la lista indica que no existe ejemplo linea 1: 4 (articulos) 5 (index no existe)
       let cost =0 
       const quantityProducts = Number(line1[0])
       const productDontEat = Number(line1[1])
@@ -55,18 +57,20 @@ function App() {
       else return swal('No existe ese producto')
       let annaPayment = cost/2
 
+      //Si es justo el pago 
       if(annaPayment===line3){
         setTotalCost(cost)
-        setCostPerson(cost/2)
+        setCostPerson(annaPayment)
         setBonAppetit(true)
         return swal('Bon Appetit')
       }
+      //Cuando es injusto y Brian le debe a Anna
       else {
-        chargeAnna = Number(line2[productDontEat])/2
+        let chargeAnna = Number(line2[productDontEat])/2
         setTotalCost(totalCost)
         setCostPerson(totalCost/2)
         setcharge(Number(line2[productDontEat])/2)
-        return swal(`${chargeAnna}, Anna didn't eat item`)
+        return swal(`${chargeAnna}`)
       }
     }
     
@@ -80,7 +84,6 @@ function App() {
       <header className="App-header">
         <div>
           <input 
-
             type="file"
             multiple={false}
             onChange={readFile}

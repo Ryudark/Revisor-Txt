@@ -1,18 +1,20 @@
-# Getting Started with Create React App
+# Presentación Prueba Bon Appetit
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este proyecto fue realizado con create app react
 
-## Available Scripts
+## Archivos .txt
 
-In the project directory, you can run:
+Se presentan 5 archivos de Txt con 5 diferentes pruebas,
 
-### `npm start`
+* Primer archivo: primer ejemplo suministrado
+* Segundo archivo: segundo ejemplo suministrado
+* Tercer archivo: Prueba independiente 1
+* Cuarto archivo: Prueba independiente 2
+* Quinto archivo: Cuando se quiere evaluar un articulo de mas en la lista
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### `npm install or Yarn`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Para poder reproducir el programa, favor realizar npm install o yarn
 
 ### `npm test`
 
