@@ -5,17 +5,17 @@ import swal from 'sweetalert';
 function App() {
 
   const fileReader = new FileReader()
-  const [chargeAnna, setchargeAnna] = useState(0)
-
+  
   let line1 = []
   let line2 = []
   let line3 = []
-
-  // let chargeAnna = 0
-
-  const [totalCost, setTotalCost] = useState()
-
-  // const [constant, setConstant] = useState(0)
+  
+  let chargeAnna = 0
+  
+  const [charge, setcharge] = useState(0)
+  const [bonAppetit, setBonAppetit] = useState(false)
+  const [totalCost, setTotalCost] = useState(0)
+  const [costPerson, setCostPerson] =useState(0)
 
   const readFile = async (e) =>{
     const file = e.target.files[0]
@@ -40,6 +40,7 @@ function App() {
         }
         constant++
       }
+      let totalCost = line2.reduce((anterior, actual)=>Number(anterior)+Number(actual))
 
       let cost =0 
       const quantityProducts = Number(line1[0])
@@ -55,11 +56,16 @@ function App() {
       let annaPayment = cost/2
 
       if(annaPayment===line3){
+        setTotalCost(cost)
+        setCostPerson(cost/2)
+        setBonAppetit(true)
         return swal('Bon Appetit')
       }
       else {
-        // chargeAnna = Number(line2[productDontEat])/2
-        setchargeAnna(Number(line2[productDontEat])/2)
+        chargeAnna = Number(line2[productDontEat])/2
+        setTotalCost(totalCost)
+        setCostPerson(totalCost/2)
+        setcharge(Number(line2[productDontEat])/2)
         return swal(`${chargeAnna}, Anna didn't eat item`)
       }
     }
@@ -80,7 +86,8 @@ function App() {
             onChange={readFile}
           />
           <div>
-            <p>Anna didn't eat item , but she shared the cost of the rest of the items with Brian. The total cost of the shared items was ${chargeAnna} , and when split in half, the cost per person was . Brian charged Anna , which means she was overcharged by .</p>
+            {charge>0? (<p>Anna didn't eat item , but she shared the cost of the rest of the items with Brian. The total cost of the shared items was ${totalCost}, and when split in half, the cost per person was ${costPerson}. Brian charged Anna , which means she was overcharged by ${charge}.</p>): 
+              bonAppetit?(<p>Anna didn't eat item , but she shared the rest of the items with Brian. The total cost of the shared items was ${totalCost}, and when split in half, the cost per person was  ${costPerson}. Since , the bill was split fairly</p>) :<></>}
           </div>
         </div>
       </header>
