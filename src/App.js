@@ -1,95 +1,87 @@
 import './App.css';
 import { useState } from 'react';
+import swal from 'sweetalert';
 
 function App() {
 
   const fileReader = new FileReader()
-  const [info, setInfo] = useState()
+  const [chargeAnna, setchargeAnna] = useState(0)
 
-  const [Line1, setLine1] = useState([])
-  const [Line2, setLine2] = useState()
-  const [Line3, setLine3] = useState()
   let line1 = []
   let line2 = []
   let line3 = []
+
+  // let chargeAnna = 0
 
   const [totalCost, setTotalCost] = useState()
 
   // const [constant, setConstant] = useState(0)
 
   const readFile = async (e) =>{
-    // console.log(e)
     const file = e.target.files[0]
 
-    // if(!file) return;
-    // let constant = 0
     let constant = 0 
     fileReader.readAsText(file)
     
     fileReader.onload = () => {
-      setInfo(fileReader.result)
       let result = fileReader.result
       let lines = result.split("\r\n")
 
+      //Guardado de cada línea en un arreglo diferente
       for(var line of lines){
         if(constant===0){
-          // setLine1(line)
           line1=line.split(' ')
-          setLine1(line.split(' '))
         }
         if(constant===1){
-          // setLine2(line)
           line2=line.split(' ')
         }
         if(constant===2){
-          // setLine3(line)
-          line3=line.split(' ')
+          line3=Number(line.split(' '))
         }
-        // setConstant(constant+1)
         constant++
-        // console.log('[line]', line)
-        // console.log(constant)
-        console.log(line1)
-        console.log(line2)
-        console.log(line3)
+      }
 
-        const productsDontEat = line1.reduce(
-          (anterior, actual) => Number(anterior) + Number(actual), 
-          0
-        );
-        const Cost = line2.reduce(
-          (anterior, actual) => Number(anterior) + Number(actual), 
-          0
-        );
-        setTotalCost(Cost)
+      let cost =0 
+      const quantityProducts = Number(line1[0])
+      const productDontEat = Number(line1[1])
+      if(quantityProducts>productDontEat){
+        for (let index = 0; index < line2.length; index++) {
+          if(index!==productDontEat){
+            cost+=Number(line2[index])
+          }
+        }
+      }
+      else return swal('No existe ese producto')
+      let annaPayment = cost/2
 
-        // setLine1(line1)
-        setLine2(line2)
-        setLine3(line3)
-        console.log(Line1)
-        console.log(productsDontEat)
+      if(annaPayment===line3){
+        return swal('Bon Appetit')
+      }
+      else {
+        // chargeAnna = Number(line2[productDontEat])/2
+        setchargeAnna(Number(line2[productDontEat])/2)
+        return swal(`${chargeAnna}, Anna didn't eat item`)
       }
     }
-    
-    console.log(Line3)
     
     fileReader.onerror = () => {
       console.log(fileReader.error)
     }
   }
-  console.log(Line2)
-  console.log(totalCost)
 
   return (
     <div className="App">
       <header className="App-header">
         <div>
-          <h2>{info}</h2>
           <input 
+
             type="file"
             multiple={false}
             onChange={readFile}
           />
+          <div>
+            <p>Anna didn't eat item , but she shared the cost of the rest of the items with Brian. The total cost of the shared items was ${chargeAnna} , and when split in half, the cost per person was . Brian charged Anna , which means she was overcharged by .</p>
+          </div>
         </div>
       </header>
     </div>
